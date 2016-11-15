@@ -10,7 +10,13 @@
 #include <fstream>
 
 using namespace std;
+struct Slowo{
 
+string slowo;
+int pozycja;
+int kierunek;
+
+};
 void wypisz_menu(void)
 {
     cout <<"1. Grajmy! " << endl;
@@ -137,6 +143,7 @@ int main()
                             cout << "Podaj wysokoœæ pola gry ";
                             cin >> rozm_y;
                             break;
+                            //TODO kontrola wartości tak aby rozmiarowo okienko nie uciekało
                     default:
                         cout << "Brak menu nr: "<< poziom_menu <<"\nSpróbuj ponownie\n";//Niby obs³uga b³êdów ;)
                         system("pause");
@@ -144,7 +151,7 @@ int main()
                         break;
 
                 }
-                if(poziom_menu == 6)break;//wpisanie wartoœci innej ni¿ menu wyniesie nas do menu wy¿ej
+                if(poziom_menu == 6)break;//wpisanie wartoœci innej ni¿ w menu wyniesie nas do menu wy¿ej
                 int trudnosc = 0;
                 //Ustawiamy poziom trudnoœci
                 cout<<"Musisz jeszcze okreœliæ poziom trudnoœci: "<<endl;
@@ -156,27 +163,41 @@ int main()
                 system("cls"); //Wyczyść ekran
                 cout << "Przygotowywanie gry...(może chwilę potrwać w zależności do słownika)\n";
                 string *random = new string[1000]; //tablica zawiera 1000 słów po pierwszym losowaniu reszta zostanie wylosowana później
-                przygotuj_dane("slowa.txt", random, 3, 10);
+                //ilość słów końcowo wylosowanych jest równa mniejszemu parametrowi, jednocześnie jest to możliwie najdłuższe słowo
+                int il_slow = (rozm_x<rozm_y)? rozm_x:rozm_y;
+                przygotuj_dane("slowa.txt", random, 3, il_slow);
                 //Tworzymy tablicę dwuwymiarową obsługującą planszę gry
                 char **plansza = new char *[rozm_x]; //alokacja pamieci
-                for ( int i = 0; i < rozm_x; ++i )
-                {
-                    plansza[i] = new double [rozm_y]; //alokacja pamieci
+                for ( int i = 0; i < rozm_x; ++i ) plansza[i] = new char [rozm_y]; //alokacja pamieci
 
+                //ilość słów końcowo wylosowanych jest równa mniejszemu parametrowi
+
+                Slowo *slowa = new Slowo[il_slow];
+
+                for(int i = 0; i<il_slow;i++)
+                {
+                    slowa[i].slowo= random[rand()%999];
+                    cout << slowa[i].slowo<<endl;
                 }
+                delete[] random;
                 system("pause");
+                //todo Losowanie pozycji na planszy
+                //słowo nie może być czytane w lewo moze być czytane od góry do dołu
 
 
                 //CDN
 
                 //Sprzątanie pamięci
-                delete[] random;
+                delete[] slowa;
                 for ( int i=0; i < rozm_x; ++i )
                         delete [] plansza[i];
                 delete [] plansza;
                 }
                 break;
-        case 2: //Wywolanie instrukcji
+
+
+
+        case 2: //Wywolanie instrukcji obsługi
                 system("cls");
                 cout <<"Gra nie zwraca uwagi na wielkoœæ liter"<<endl;
                 cout <<"Mo¿na wprowadziæ wiêcej ni¿ jedno s³owo za jednym razem. Wystarczy rozdzieliæ je spacj¹"<<endl;
