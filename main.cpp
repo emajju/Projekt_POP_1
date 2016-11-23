@@ -13,7 +13,8 @@ using namespace std;
 struct Slowo{
 
 string slowo;
-int pozycja;
+int pozycja_x;
+int pozycja_y;
 int kierunek;
 
 };
@@ -24,6 +25,7 @@ void wypisz_menu(void)
     cout <<"3. S³owniki " << endl;
     cout <<"4. Autor " << endl;
     cout <<"5. Wyjœcie z programu" << endl;
+
 }
 void wypisz_autor(void)
 {
@@ -94,6 +96,23 @@ bool przygotuj_dane(char adres[], string mniejsza[], int min_dl, int max_dl) //Z
     slownik.close();
 
 }
+void wypisz_plansze(char** Tab, int rozm_x, int rozm_y)
+{
+    for(int y = 0; y<rozm_y ; y++)
+    {
+        for(int x = 0; x<rozm_x ; x++)
+        {
+            cout << Tab[x][y] <<"|";
+        }
+        cout<<endl;
+    }
+
+}
+void slowo_na_wielkie(char** Tab, Slowo slowo)//Ustawia podane słowo w podanej tabeli na wielkie litery +32 do wartości komórki
+{
+
+}
+
 int main()
 {
 
@@ -170,6 +189,12 @@ int main()
                 char **plansza = new char *[rozm_x]; //alokacja pamieci
                 for ( int i = 0; i < rozm_x; ++i ) plansza[i] = new char [rozm_y]; //alokacja pamieci
 
+                //Zapełnienie tablicy spacjami
+                for(int x=0; x<rozm_x;x++)
+                {
+                    for(int y=0; y<rozm_y; y++) plansza[x][y]=' ';
+                }
+
                 //ilość słów końcowo wylosowanych jest równa mniejszemu parametrowi
 
                 Slowo *slowa = new Slowo[il_slow];
@@ -180,6 +205,7 @@ int main()
                     cout << slowa[i].slowo<<endl;
                 }
                 delete[] random;
+                wypisz_plansze(plansza, rozm_x, rozm_y);
                 system("pause");
                 //todo Losowanie pozycji na planszy
                 //słowo nie może być czytane w lewo moze być czytane od góry do dołu
